@@ -16,10 +16,10 @@ class Node {  // Define the Node class
   Node();
 
   // Declare a memeber function that returns all the node in the graph.
-  std::vector<Node*>& getAllNodes();
+  std::vector<Node*> getAllNodes();
 
   // Delcare the destructor of the class
-  ~Node();
+  // ~Node();
 
   // Declare a member function that creates 3 child nodes with acceptable
   // directions for leaf nodes

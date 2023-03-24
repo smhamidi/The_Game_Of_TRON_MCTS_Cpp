@@ -20,7 +20,7 @@ Node::Node(Node* _parent, int _globalDir)
       visited{false},
       globalDir{_globalDir} {}
 
-std::vector<Node*>& Node::getAllNodes() {
+std::vector<Node*> Node::getAllNodes() {
   // Returning vector containing all nodes.
   std::vector<Node*> nodesToReturn;
 
@@ -37,8 +37,8 @@ std::vector<Node*>& Node::getAllNodes() {
 
     // Iterate over the current node's child nodes and push them onto the stack
     // for later iterations.
-    for (Node*& child : current->childs) {
-      if (child) {
+    for (Node*& child : current->get_childs()) {
+      if (child != nullptr) {
         nodeStack.push_back(child);
       }
     }
@@ -49,19 +49,15 @@ std::vector<Node*>& Node::getAllNodes() {
   return nodesToReturn;
 }
 
-Node::~Node() {  // Destructor for Node class
-
-  for (Node*& nodes : this->getAllNodes()) {
-    delete nodes;
-  }
-}
-
 void Node::assignChilds() {
   // DEBUG
   if ((this->childs[0] != nullptr) || (this->childs[1] != nullptr) ||
       (this->childs[2] != nullptr)) {
     throw std::logic_error(
         "Node.cpp: assginChilds: assigning to Non leaf Node");
+  }
+  if (this->get_depth() != 0) {
+    throw std::logic_error("Node.cpp: assignChilds: depths is not 0");
   }
   // END
 
@@ -71,8 +67,10 @@ void Node::assignChilds() {
 }
 
 bool Node::expansion() {
-  // Loop through all nodes and select the ones with depths of 0 to assign child
-  for (Node*& node : this->getAllNodes()) {
+  // Loop through all nodes and select the ones with depths of 0 to assign
+  // child
+  std::vector<Node*> allNodes = this->getAllNodes();
+  for (Node*& node : allNodes) {
     if (node->get_depth() == 0) {
       node->assignChilds();
       node->set_isLeaf(false);
@@ -104,3 +102,14 @@ double Node::calcValue() const {
            EXPLORE_RATE * std::sqrt((std::log(parent->get_pCnt()) /
                                      static_cast<double>(pCnt)))));
 }
+
+// Node::~Node() {
+//   // Destructor for Node class
+//   auto nodes = this->getAllNodes();
+//   for (Node*& node : nodes) {
+//     if (node != nullptr) {
+//       delete node;
+//       node = nullptr;
+//     }
+//   }
+// }
