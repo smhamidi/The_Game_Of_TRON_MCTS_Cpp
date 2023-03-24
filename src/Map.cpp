@@ -14,7 +14,8 @@ Map::Map(size_t row, size_t col, size_t xHead1, size_t yHead1, size_t xHead2,
 
   // Create a vector of vectors to represent the board, initially all set to
   // true
-  std::vector<std::vector<bool>> board(row, std::vector<bool>(col, true));
+  std::vector<std::vector<bool>> tmpBoard(row, std::vector<bool>(col, true));
+  board = std::move(tmpBoard);
 
   // Create the walls around the edge of the board
   for (size_t rowIdx = 0; rowIdx < row; ++rowIdx) {
@@ -94,7 +95,7 @@ bool Map::updateCoordinate(size_t _x, size_t _y) {
   return true;
 }
 bool Map::updateCoordinate(std::vector<size_t> head) {
-  Map::updateCoordinate(head[0], head[1]);
+  return Map::updateCoordinate(head[0], head[1]);
 }
 
 bool Map::testCommand(int cmd, size_t playerNum) {

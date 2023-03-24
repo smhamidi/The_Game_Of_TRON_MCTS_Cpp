@@ -24,7 +24,7 @@ class Map {
   void dispMap() const;
 
   // Updates the game board according to the input commands of the two players.
-  int updateMap(int _ourCommand, int _hisComand);
+  int updateMap(int _player1CMD, int _player2CMD);
 
   // Updates the position of a single head on the game board.
   bool updateCoordinate(size_t _x, size_t _y);
