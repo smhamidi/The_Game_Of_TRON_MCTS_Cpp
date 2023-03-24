@@ -1,10 +1,5 @@
 #include "Node.h"
 
-#include <cmath>
-#include <iostream>
-#include <stack>
-#include <vector>
-
 Node::Node()
     : wCnt{0},
       pCnt{0},
@@ -25,9 +20,11 @@ Node::Node(Node* _parent, int _globalDir)
       visited{false},
       globalDir{_globalDir} {}
 
-Node::~Node() {  // Destructor for Node class
+std::vector<Node*>& Node::getAllNodes() {
+  // Returning vector containing all nodes.
+  std::vector<Node*> nodesToReturn;
 
-  // Create a stack to keep track of nodes that need to be deleted, and push
+  // Create a vector to keep track of nodes that need to be Added, and push
   // the current node onto the stack.
   std::vector<Node*> nodeStack;
   nodeStack.push_back(this);
@@ -39,15 +36,23 @@ Node::~Node() {  // Destructor for Node class
     nodeStack.pop_back();
 
     // Iterate over the current node's child nodes and push them onto the stack
-    // for later deletion.
+    // for later iterations.
     for (Node*& child : current->childs) {
       if (child) {
         nodeStack.push_back(child);
       }
     }
 
-    // Delete the current node.
-    delete current;
+    // Add the current node.
+    nodesToReturn.push_back(current);
+  }
+  return nodesToReturn;
+}
+
+Node::~Node() {  // Destructor for Node class
+
+  for (Node*& nodes : this->getAllNodes()) {
+    delete nodes;
   }
 }
 
@@ -66,40 +71,15 @@ void Node::assignChilds() {
 }
 
 bool Node::expansion() {
-  this->depth++;  // Increment the depth of the current node.
-
-  // Create a stack to keep track of nodes that need to be expanded, and push
-  // the current node onto the stack.
-  std::vector<Node*> nodeStack;
-  nodeStack.push_back(this);
-
-  // Continue processing nodes until the stack is empty.
-  while (!nodeStack.empty()) {
-    // Pop the top node from the stack and assign it to a variable.
-    Node* current = nodeStack.back();
-    nodeStack.pop_back();
-
-    // Check if the current node is a leaf node and the root node.
-    if (current->isLeaf && !current->parent) {
-      // If so, expand the node by generating its child nodes.
-      current->isLeaf = false;
-      current->assignChilds();
+  // Loop through all nodes and select the ones with depths of 0 to assign child
+  for (Node*& node : this->getAllNodes()) {
+    if (node->get_depth() == 0) {
+      node->assignChilds();
+      node->set_isLeaf(false);
+      node->increaseDepth();
     } else {
-      // If the current node is not a leaf node or the root node, iterate over
-      // its child nodes.
-      for (auto& i : current->childs) {
-        if (i->get_isLeaf()) {
-          // If the child node is a leaf node with a parent, expand it by
-          // generating its child nodes.
-          i->increaseDepth();
-          i->set_isLeaf(false);
-          i->assignChilds();
-        } else {
-          // If the child node is not a leaf node, push it onto the stack for
-          // later expansion.
-          nodeStack.push_back(i);
-        }
-      }
+      node->set_isLeaf(false);
+      node->increaseDepth();
     }
   }
 
@@ -113,10 +93,12 @@ double Node::calcValue() const {
     throw std::logic_error(
         "Node.cpp: calcValue: there is no parent to look for");
   }
-  if (pCnt == 0 || parent->get_pCnt() == 0) {
-    throw std::logic_error("Node.cpp: calcValue: playCount is 0");
-  }
   // END
+
+  if (pCnt == 0) {
+    return std::numeric_limits<double>::infinity();
+  }
+
   double EXPLORE_RATE = 10;
   return (((static_cast<double>(wCnt) / static_cast<double>(pCnt)) +
            EXPLORE_RATE * std::sqrt((std::log(parent->get_pCnt()) /

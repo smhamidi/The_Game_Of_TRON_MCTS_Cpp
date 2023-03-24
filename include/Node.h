@@ -3,12 +3,20 @@
 #define NODE_H
 
 #include <array>
+#include <cmath>
+#include <iostream>
 #include <iostream>  // Include the standard library header for input/output streams
+#include <limits>
+#include <stack>
+#include <vector>
 
 class Node {  // Define the Node class
  public:
   // Declare the default constructor for creating a node as a root
   Node();
+
+  // Declare a memeber function that returns all the node in the graph.
+  std::vector<Node*>& getAllNodes();
 
   // Delcare the destructor of the class
   ~Node();
