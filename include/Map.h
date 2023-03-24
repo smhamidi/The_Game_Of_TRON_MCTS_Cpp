@@ -68,4 +68,3 @@ class Map {
 };
 
 #endif
-#ifndef MAP_H
