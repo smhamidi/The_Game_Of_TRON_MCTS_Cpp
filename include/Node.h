@@ -52,7 +52,7 @@ class Node {  // Define the Node class
 
   // Declare a member function that returns a reference to the array of child
   // nodes
-  std::array<Node*, 3>& get_childs() { return childs; }
+  inline std::array<Node*, 3>& get_childs() { return childs; }
 
   // Declare a member function that returns a reference to the parent node
   Node*& get_parent() { return parent; }
@@ -69,7 +69,7 @@ class Node {  // Define the Node class
   size_t get_pCnt() const { return pCnt; }
 
   // Declare a member function that returns the global direction of this node
-  int get_globalDir() const { return globalDir; }
+  inline int get_globalDir() const { return globalDir; }
 
   // Declare a member function that returns true if this node is a leaf node
   bool get_isLeaf() const { return isLeaf; }

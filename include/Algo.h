@@ -49,7 +49,7 @@ inline Node*& selection(Node* const& _parent) {
   return maxChild;
 }
 
-inline bool backP(Node*& leaf, bool& result) {
+inline bool backP(Node*& leaf, bool result) {
   while (leaf) {
     leaf->increaseP();
     if (result) {
