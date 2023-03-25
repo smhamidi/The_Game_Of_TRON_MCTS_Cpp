@@ -7,7 +7,6 @@ Node::Node()
       parent{nullptr},
       childs({nullptr, nullptr, nullptr}),
       isLeaf{true},
-      visited{false},
       globalDir{2} {}
 
 Node::Node(Node* _parent, int _globalDir)
@@ -17,7 +16,6 @@ Node::Node(Node* _parent, int _globalDir)
       parent{_parent},
       childs({nullptr, nullptr, nullptr}),
       isLeaf{true},
-      visited{false},
       globalDir{_globalDir} {}
 
 std::vector<Node*> Node::getAllNodes() {

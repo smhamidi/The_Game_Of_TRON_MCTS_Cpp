@@ -34,11 +34,8 @@ class Node {  // Define the Node class
   void increaseW() { wCnt++; }
 
   // Declare a member function that increments the number of times this node is
-  // visited
+  // played
   void increaseP() { pCnt++; }
-
-  // Declare a member function that marks this node as visited
-  void updateVisited() { visited = true; }
 
   // Declare a member function that increments the depth of this node
   void increaseDepth() { depth++; }
@@ -63,15 +60,12 @@ class Node {  // Define the Node class
   // Declare a member function that returns the depth of this node
   size_t get_depth() const { return depth; }
 
-  // Declare a member function that returns true if this node has been visited
-  bool get_visited() const { return visited; }
-
   // Declare a member function that returns the number of times this node has
   // won
   size_t get_wCnt() const { return wCnt; }
 
   // Declare a member function that returns the number of times this node has
-  // been visited
+  // been played
   size_t get_pCnt() const { return pCnt; }
 
   // Declare a member function that returns the global direction of this node
@@ -88,10 +82,9 @@ class Node {  // Define the Node class
   Node(Node* _parent, int _globalDir);
 
   size_t wCnt;  // The number of times this node has won
-  size_t pCnt;  // The number of times this node has been visited
+  size_t pCnt;  // The number of times this node has been played
 
-  bool isLeaf;   // Flag to indicate whether this node is a leaf node or not
-  bool visited;  // Flag to indicate whether this node has been visited or not
+  bool isLeaf;  // Flag to indicate whether this node is a leaf node or not
 
   std::array<Node*, 3> childs;  // The array of child nodes
   Node* parent;                 // Pointer to the parent node
