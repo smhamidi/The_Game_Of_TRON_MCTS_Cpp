@@ -50,10 +50,14 @@ inline Node*& selection(Node* const& _parent) {
 }
 
 inline bool backP(Node*& leaf, bool result) {
-  while (leaf) {
+  while (true) {
     leaf->increaseP();
     if (result) {
       leaf->increaseW();
+    }
+
+    if (leaf->get_parent() == nullptr) {
+      break;
     }
     leaf = leaf->get_parent();
   }

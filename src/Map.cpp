@@ -63,16 +63,16 @@ int Map::updateMap(int player1CMD, int player2CMD) {
   updateHead1(head1[0] + (player1CMD - 2) % 2, head1[1] - (player1CMD - 1) % 2);
   updateHead2(head2[0] + (player2CMD - 2) % 2, head2[1] - (player2CMD - 1) % 2);
 
+  bool head1Flag = updateCoordinate(head1);
+  bool head2Flag = updateCoordinate(head2);
+
   if (head1 == head2) {
     mapState = 0;
     return 0;  // DRAW
-  }
-
-  else if (!updateCoordinate(head1)) {
+  } else if (!head1Flag) {
     mapState = 2;
     return 2;  // Player 2 won
-
-  } else if (!updateCoordinate(head2)) {
+  } else if (!head2Flag) {
     mapState = 1;
     return 1;  // Player 1 won
   }

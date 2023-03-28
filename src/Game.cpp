@@ -32,7 +32,6 @@ bool Game::updateGame(size_t xHead1, size_t yHead1, size_t xHead2,
   for (const auto& i : node1->get_childs()) {
     if (player1CMD == i->get_globalDir()) {
       node1 = i;
-      node1->set_parent(nullptr);
       break;
     }
   }
@@ -40,10 +39,11 @@ bool Game::updateGame(size_t xHead1, size_t yHead1, size_t xHead2,
   for (const auto& i : node2->get_childs()) {
     if (player2CMD == i->get_globalDir()) {
       node2 = i;
-      node2->set_parent(nullptr);
       break;
     }
   }
+  node1->set_parent(nullptr);
+  node2->set_parent(nullptr);
 
   while (node1->get_depth() < designedDepth) {
     node1->expansion();
